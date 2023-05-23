@@ -26,7 +26,7 @@ var semaphore = 0;
 **/
 
 function exec(task) {
-  console.log('saga exec', { queueLength: queue.length, semaphore, task });
+  console.log('saga exec', { queueLength: queue.length, semaphore });
   try {
     suspend();
     task();
@@ -40,7 +40,7 @@ function exec(task) {
 
 
 function asap(task) {
-  console.log('saga asap', { queueLength: queue.length, semaphore, task });
+  console.log('saga asap', { queueLength: queue.length, semaphore });
   queue.push(task);
 
   if (!semaphore) {
@@ -53,7 +53,7 @@ function asap(task) {
  */
 
 function immediately(task) {
-  console.log('saga immediately', { queueLength: queue.length, semaphore, task });
+  console.log('saga immediately', { queueLength: queue.length, semaphore });
   try {
     suspend();
     return task();
@@ -373,6 +373,7 @@ function stdChannel() {
   var put = chan.put;
 
   chan.put = function (input) {
+    console.log('saga stdChannel chan.put()', { queueLength: queue.length, semaphore, input });
     if (input[SAGA_ACTION]) {
       put(input);
       return;
@@ -1186,7 +1187,7 @@ function proc(env, iterator$1, parentContext, parentEffectId, meta, isRoot, cont
   }
 
   function runEffect(effect, effectId, currCb) {
-    console.log('saga runEffect', { queueLength: queue.length, semaphore, effect, effectId });
+    console.log('saga runEffect', { queueLength: queue.length, semaphore, type: effect.type + ' ' + (effect.payload.action?.type || effect.payload.type || effect.payload.pattern || effect.payload.args?.[0] || ''), effectId, effect });
     /**
       each effect runner must attach its own logic of cancellation to the provided callback
       it allows this generator to propagate cancellation downward.
