@@ -24,17 +24,7 @@
     },
     "./package.json": "./package.json"
   },
-  "scripts": {
-    "test": "yarn test:types && yarn test:jest",
-    "test:jest": "jest",
-    "test:types": "dtslint types",
-    "clean": "rimraf dist",
-    "prebuild": "yarn clean",
-    "build": "rollup -c",
-    "postbuild": "node ./scripts/createProxyCjsEntries.js",
-    "prepare": "yarn build",
-    "preversion": "npm test"
-  },
+  "scripts": {},
   "repository": "https://github.com/redux-saga/redux-saga/tree/main/packages/core",
   "keywords": [
     "javascript",
