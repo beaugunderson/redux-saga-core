@@ -26,6 +26,7 @@ var semaphore = 0;
 **/
 
 function exec(task) {
+  console.log('saga exec', { queueLength: queue.length, semaphore, task });
   try {
     suspend();
     task();
@@ -39,6 +40,7 @@ function exec(task) {
 
 
 function asap(task) {
+  console.log('saga asap', { queueLength: queue.length, semaphore, task });
   queue.push(task);
 
   if (!semaphore) {
@@ -51,6 +53,7 @@ function asap(task) {
  */
 
 function immediately(task) {
+  console.log('saga immediately', { queueLength: queue.length, semaphore, task });
   try {
     suspend();
     return task();
@@ -64,6 +67,7 @@ function immediately(task) {
 **/
 
 function suspend() {
+  console.log('saga suspend', { queueLength: queue.length, semaphore });
   semaphore++;
 }
 /**
@@ -72,6 +76,7 @@ function suspend() {
 
 
 function release() {
+  console.log('saga release', { queueLength: queue.length, semaphore });
   semaphore--;
 }
 /**
@@ -80,6 +85,7 @@ function release() {
 
 
 function flush() {
+  console.log('saga flush', { queueLength: queue.length, semaphore });
   release();
   var task;
 
@@ -1180,6 +1186,7 @@ function proc(env, iterator$1, parentContext, parentEffectId, meta, isRoot, cont
   }
 
   function runEffect(effect, effectId, currCb) {
+    console.log('saga runEffect', { queueLength: queue.length, semaphore, effect, effectId });
     /**
       each effect runner must attach its own logic of cancellation to the provided callback
       it allows this generator to propagate cancellation downward.
