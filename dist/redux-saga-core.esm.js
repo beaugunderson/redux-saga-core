@@ -1187,7 +1187,7 @@ function proc(env, iterator$1, parentContext, parentEffectId, meta, isRoot, cont
   }
 
   function runEffect(effect, effectId, currCb) {
-    console.log('saga runEffect', { queueLength: queue.length, semaphore, type: effect.type + ' ' + (effect.payload.action?.type || effect.payload.type || effect.payload.pattern || effect.payload.args?.[0]?.type || effect.payload.args?.[0] || ''), effectId, effect });
+    console.log('saga runEffect', { queueLength: queue.length, semaphore, type: effect.type + ' ' + (effect.payload?.action?.type || effect.payload?.type || effect.payload?.pattern || effect.payload?.args?.[0]?.type || effect.payload?.args?.[0] || ''), effectId, effect });
     /**
       each effect runner must attach its own logic of cancellation to the provided callback
       it allows this generator to propagate cancellation downward.
